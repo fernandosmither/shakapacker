@@ -8,6 +8,9 @@ Changes since last non-beta release.
 
 _Please add entries here for your pull requests that are not yet released._
 
+### Fixed
+- Set `source_entry_path` to relative `packs` rather absolute `/` in `webpacker.yml` [PR 205](https://github.com/shakacode/shakapacker/pull/205) by [ahangarha](https://github.com/ahangarha)
+
 ## [v6.5.4] - November 4, 2022
 ### Fixed
 - Fixed regression caused by 6.5.3. PR #192 introduce extra split() call. [PR 202](https://github.com/shakacode/shakapacker/pull/202) by [Eric-Guo](https://github.com/Eric-Guo).
