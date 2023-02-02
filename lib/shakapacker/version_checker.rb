@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-require "webpacker/version"
+require_relative "version"
 
-module Webpacker
+module Shakapacker
   class VersionChecker
     attr_reader :node_package_version
 
@@ -27,7 +27,7 @@ module Webpacker
 
       uses_wildcard = node_package_version.semver_wildcard?
 
-      if !Webpacker.config.ensure_consistent_versioning? && (uses_wildcard || !versions_match)
+      if !Shakapacker.config.ensure_consistent_versioning? && (uses_wildcard || !versions_match)
         check_failed = if uses_wildcard
           "Semver wildcard without a lockfile detected"
         else
@@ -35,7 +35,7 @@ module Webpacker
         end
 
         warn <<-MSG.strip_heredoc
-          Webpacker::VersionChecker - #{check_failed}
+          Shakapacker::VersionChecker - #{check_failed}
 
           You are currently not checking for consistent versions of shakapacker gem and npm package. A version mismatch or usage of semantic versioning wildcard (~ or ^) without a lockfile has been detected.
 
@@ -79,7 +79,7 @@ module Webpacker
       end
 
       def gem_version
-        Webpacker::VERSION
+        Shakapacker::VERSION
       end
 
       def gem_major_minor_patch_version

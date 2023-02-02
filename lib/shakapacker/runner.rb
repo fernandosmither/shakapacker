@@ -1,4 +1,4 @@
-module Webpacker
+module Shakapacker
   class Runner
     def self.run(argv)
       $stdout.sync = true

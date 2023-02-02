@@ -5,7 +5,7 @@
 #
 # When the configuration is set to on-demand compilation, with the `compile: true` option in
 # the webpacker.yml file, any lookups will be preceded by a compilation if one is needed.
-class Webpacker::Manifest
+class Shakapacker::Manifest
   class MissingEntryError < StandardError; end
 
   delegate :config, :compiler, :dev_server, to: :@webpacker
@@ -37,14 +37,14 @@ class Webpacker::Manifest
   #
   # Example:
   #
-  #   Webpacker.manifest.lookup('calendar.js') # => "/packs/calendar-1016838bab065ae1e122.js"
+  #   Shakapacker.manifest.lookup('calendar.js') # => "/packs/calendar-1016838bab065ae1e122.js"
   def lookup(name, pack_type = {})
     compile if compiling?
 
     find(full_pack_name(name, pack_type[:type]))
   end
 
-  # Like lookup, except that if no asset is found, raises a Webpacker::Manifest::MissingEntryError.
+  # Like lookup, except that if no asset is found, raises a Shakapacker::Manifest::MissingEntryError.
   def lookup!(name, pack_type = {})
     lookup(name, pack_type) || handle_missing_entry(name, pack_type)
   end
@@ -55,7 +55,7 @@ class Webpacker::Manifest
     end
 
     def compile
-      Webpacker.logger.tagged("Webpacker") { compiler.compile }
+      Shakapacker.logger.tagged("Webpacker") { compiler.compile }
     end
 
     def data
@@ -76,7 +76,7 @@ class Webpacker::Manifest
     end
 
     def handle_missing_entry(name, pack_type)
-      raise Webpacker::Manifest::MissingEntryError, missing_file_from_manifest_error(full_pack_name(name, pack_type[:type]))
+      raise Shakapacker::Manifest::MissingEntryError, missing_file_from_manifest_error(full_pack_name(name, pack_type[:type]))
     end
 
     def load

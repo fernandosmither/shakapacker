@@ -32,7 +32,7 @@ describe "VersionChecker" do
     node_package_version = NodePackageVersionDouble.new(raw: "6.1.0", major_minor_patch: ["6", "1", "0"])
 
     expect { check_version(node_package_version, "6.0.0", false) }
-      .to output(/Webpacker::VersionChecker - Version mismatch/)
+      .to output(/::VersionChecker - Version mismatch/)
       .to_stderr
   end
 
@@ -40,7 +40,7 @@ describe "VersionChecker" do
     node_package_version = NodePackageVersionDouble.new(raw: "^6.1.0", major_minor_patch: ["6", "1", "0"], semver_wildcard: true)
 
     expect { check_version(node_package_version, "6.0.0", false) }
-      .to output(/Webpacker::VersionChecker - Semver wildcard without a lockfile detected/)
+      .to output(/::VersionChecker - Semver wildcard without a lockfile detected/)
       .to_stderr
   end
 

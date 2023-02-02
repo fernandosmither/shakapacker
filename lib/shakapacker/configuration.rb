@@ -2,7 +2,7 @@ require "yaml"
 require "active_support/core_ext/hash/keys"
 require "active_support/core_ext/hash/indifferent_access"
 
-class Webpacker::Configuration
+class Shakapacker::Configuration
   class << self
     attr_accessor :installing
   end
@@ -82,7 +82,7 @@ class Webpacker::Configuration
 
   def check_yarn_integrity=(value)
     warn <<~EOS
-      Webpacker::Configuration#check_yarn_integrity=(value) is obsolete. The integrity
+      Shakapacker::Configuration#check_yarn_integrity=(value) is obsolete. The integrity
       check has been removed from Webpacker (https://github.com/rails/webpacker/pull/2518)
       so changing this setting will have no effect.
     EOS
@@ -134,7 +134,7 @@ class Webpacker::Configuration
         rescue ArgumentError
           YAML.load_file(path)
         end
-        HashWithIndifferentAccess.new(config[env] || config[Webpacker::DEFAULT_ENV])
+        HashWithIndifferentAccess.new(config[env] || config[Shakapacker::DEFAULT_ENV])
       end
     end
 end

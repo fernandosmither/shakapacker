@@ -1,11 +1,11 @@
 require "shellwords"
 require "socket"
-require "webpacker/configuration"
-require "webpacker/dev_server"
-require "webpacker/runner"
+require_relative "configuration"
+require_relative "dev_server"
+require_relative "runner"
 
-module Webpacker
-  class DevServerRunner < Webpacker::Runner
+module Shakapacker
+  class DevServerRunner < Shakapacker::Runner
     def run
       load_config
       detect_unsupported_switches!
@@ -63,7 +63,7 @@ module Webpacker
       end
 
       def execute_cmd
-        env = Webpacker::Compiler.env
+        env = Shakapacker::Compiler.env
         env["WEBPACKER_CONFIG"] = @webpacker_config
         env["WEBPACK_SERVE"] = "true"
 

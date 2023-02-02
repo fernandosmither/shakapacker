@@ -1,9 +1,9 @@
 require "open3"
-require "webpacker/compiler_strategy"
+require_relative "compiler_strategy"
 
-class Webpacker::Compiler
+class Shakapacker::Compiler
   # Additional environment variables that the compiler is being run with
-  # Webpacker::Compiler.env['FRONTEND_API_KEY'] = 'your_secret_key'
+  # Shakapacker::Compiler.env['FRONTEND_API_KEY'] = 'your_secret_key'
   cattr_accessor(:env) { {} }
 
   delegate :config, :logger, :strategy, to: :webpacker
