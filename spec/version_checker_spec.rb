@@ -1,4 +1,4 @@
-require "webpacker/version"
+require "shakapacker/version"
 
 class NodePackageVersionDouble
   attr_reader :raw, :major_minor_patch

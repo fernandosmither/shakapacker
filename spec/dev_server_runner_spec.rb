@@ -1,4 +1,4 @@
-require "webpacker/dev_server_runner"
+require "shakapacker/dev_server_runner"
 
 describe "DevServerRunner" do
   before do
