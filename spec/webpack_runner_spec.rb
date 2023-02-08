@@ -1,4 +1,4 @@
-require "shakapacker/webpack_runner"
+require "webpacker/webpack_runner"
 
 describe "WebpackRunner" do
   before :all do

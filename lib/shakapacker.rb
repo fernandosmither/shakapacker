@@ -46,3 +46,6 @@ require_relative "shakapacker/commands"
 require_relative "shakapacker/dev_server"
 
 require_relative "shakapacker/railtie" if defined?(Rails)
+
+# For backward compatibility
+require_relative "webpacker"
