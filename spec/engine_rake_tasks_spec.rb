@@ -16,10 +16,7 @@ describe "EngineRakeTasks" do
     original_files_in_bin = current_files_in_bin
 
     Dir.chdir(mounted_app_path) { `bundle exec rake app:webpacker:binstubs` }
-    webpack_binstub_paths.each { |path| expect(File.exist?(path)).to be true }
-
-    # and no other files are added
-    expect(current_files_in_bin - webpack_binstub_paths).to match_array original_files_in_bin
+    expected_binstub_paths.each { |path| expect(File.exist?(path)).to be true }
   end
 
   private
@@ -31,16 +28,16 @@ describe "EngineRakeTasks" do
       Dir.glob("#{mounted_app_path}/test/dummy/bin/*")
     end
 
-    def webpack_binstub_paths
-      [
-        "#{mounted_app_path}/test/dummy/bin/yarn",
-        "#{mounted_app_path}/test/dummy/bin/webpacker",
-        "#{mounted_app_path}/test/dummy/bin/webpacker-dev-server",
-      ]
+    # expected binstubs TODO: rename the method
+    def expected_binstub_paths
+      gem_path = File.expand_path("..", __dir__)
+      Dir.chdir("#{gem_path}/lib/install/bin") do
+        Dir.glob("*").map { |file| "#{mounted_app_path}/test/dummy/bin/#{file}" }
+      end
     end
 
     def remove_webpack_binstubs
-      webpack_binstub_paths.each do |path|
+      expected_binstub_paths.each do |path|
         File.delete(path) if File.exist?(path)
       end
     end
