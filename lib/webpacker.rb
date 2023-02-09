@@ -23,6 +23,20 @@ module Webpacker
   ensure
     Webpacker.logger = old_logger
   end
+
+  DEPRECATION_GUIDE_URL = "https://github.com/shakacode/shakapacker/docs/webpacker_to_shakapacker_guideline.md"
+  DEPRECATION_MESSAGE = <<~MSG
+    \e[33m
+    DEPRECATION NOTICE:
+
+    Using Webpacker module is deprecated in Shakapacker. Thought this version
+    offers backward compatibility, it is strongly recommended to update your
+    project to comply with the new interfaces.
+
+    For more information about this process, check:
+    #{DEPRECATION_GUIDE_URL}
+    \e[0m
+  MSG
 end
 
 require_relative "webpacker/instance"

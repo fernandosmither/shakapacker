@@ -1,17 +1,6 @@
 class Webpacker::Instance < Shakapacker::Instance
   def initialize(root_path: Rails.root, config_path: Rails.root.join("config/webpacker.yml"))
-    puts <<~MSG
-      \e[33m
-      DEPRECATION NOTICE:
-
-      Using Webpacker module is deprecated in Shakapacker. Thought this version offers
-      backward compatibility, it is strongly recommended to update your project to comply
-      with the future API.
-
-      For more information about this process, check:
-      https://github.com/shakacode/shakapacker/docs/webpacker_to_shakapacker_guideline.md
-      \e[0m
-    MSG
+    puts Webpacker::DEPRECATION_MESSAGE
 
     super
   end
@@ -21,23 +10,6 @@ class Webpacker::Instance < Shakapacker::Instance
   end
 
   def config
-    # puts "x+x+x+" * 20
-    # if @config.blank?
-    #   exit 1
-    #   puts <<~MSG
-    #     \e[33m
-    #     DEPRECATION NOTICE:
-
-    #     Using Webpacker module is deprecated in Shakapacker. Thought this version offers
-    #     backward compatibility, it is strongly recommended to update your project to comply
-    #     with the future API.
-
-    #     For more information about this process, check:
-    #     https://github.com/shakacode/shakapacker/docs/webpacker_to_shakapacker_guideline.md
-    #     \e[0m
-    #   MSG
-    # end
-
     @config ||= Webpacker::Configuration.new(
       root_path: root_path,
       config_path: config_path,
