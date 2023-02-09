@@ -1,21 +1,36 @@
 require "shakapacker/version"
 
-namespace :webpacker do
-  desc "Provide information on Webpacker's environment"
+namespace :shakapacker do
+  desc "Provide information on Shakapackers's environment"
   task :info do
     Dir.chdir(Rails.root) do
-      $stdout.puts "Ruby: #{`ruby --version`}"
-      $stdout.puts "Rails: #{Rails.version}"
-      $stdout.puts "Webpacker: #{Webpacker::VERSION}"
-      $stdout.puts "Node: #{`node --version`}"
-      $stdout.puts "Yarn: #{`yarn --version`}"
+      $stdout.puts <<~INFO
+        Ruby: #{`ruby --version`.chomp}
+        Rails: #{Rails.version}
+        Shakapacker: #{Shakapacker::VERSION}
+        Node: #{`node --version`.chomp}
+        Yarn: #{`yarn --version`.chomp}
 
-      $stdout.puts "\n"
-      $stdout.puts "shakapacker: \n#{`npm list shakapacker version`}"
-
-      $stdout.puts "Is bin/webpacker present?: #{File.exist? 'bin/webpacker'}"
-      $stdout.puts "Is bin/webpacker-dev-server present?: #{File.exist? 'bin/webpacker-dev-server'}"
-      $stdout.puts "Is bin/yarn present?: #{File.exist? 'bin/yarn'}"
+        shakapacker:
+        #{`npm list shakapacker version`.chomp}
+        Is bin/shakapacker present?: #{bin_shakapacker_exists}
+        Is bin/shakapacker-dev-server present?: #{bin_shakapacker_dev_server_exists}
+        Is bin/yarn present?: #{File.exist? 'bin/yarn'}
+      INFO
     end
   end
+end
+
+def bin_shakapacker_exists
+  return "Yes" if File.exist?("bin/shakapacker")
+  return "No! but deprecated `bin/webpacker` exist." if File.exist?("bin/webpacker")
+
+  "No!"
+end
+
+def bin_shakapacker_dev_server_exists
+  return "Yes" if File.exist?("bin/shakapacker-dev-server")
+  return "No! but deprecated `bin/webpacker-dev-server` exist." if File.exist?("bin/webpacker-dev-server")
+
+  "No!"
 end

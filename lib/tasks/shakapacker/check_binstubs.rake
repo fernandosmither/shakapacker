@@ -1,11 +1,21 @@
-namespace :webpacker do
-  desc "Verifies that bin/webpacker is present"
+namespace :shakapacker do
+  desc "Verifies that bin/shakapacker is present"
   task :check_binstubs do
-    unless File.exist?(Rails.root.join("bin/webpacker"))
-      $stderr.puts "webpacker binstub not found.\n"\
-           "Have you run rails webpacker:install ?\n"\
-           "Make sure the bin directory and bin/webpacker are not included in .gitignore\n"\
-           "Exiting!"
+    if File.exist?(Rails.root.join("bin/shakapacker"))
+      exit
+    elsif File.exist?(Rails.root.join("bin/webpacker"))
+      $stderr.puts <<~MSG
+        DEPRECATION NOICE:
+        `bin/webpacker` found but it is deprecated.
+        More info: FIXME
+      MSG
+    else
+      $stderr.puts <<~MSG
+        Cound't find shakapacker binstub!
+        Possible solutions:
+         - Ensure you have run `rails shakapacker:install`.
+         - Ensure the `bin` directory and `bin/shakapacker` are not included in .gitignore
+      MSG
       exit!
     end
   end
