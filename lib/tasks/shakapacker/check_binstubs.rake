@@ -7,7 +7,7 @@ namespace :shakapacker do
       $stderr.puts <<~MSG
         DEPRECATION NOICE:
         `bin/webpacker` found but it is deprecated.
-        More info: FIXME
+        More info: #{Webpacker::DEPRECATION_GUIDE_URL}
       MSG
     else
       $stderr.puts <<~MSG

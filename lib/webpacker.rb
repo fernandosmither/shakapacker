@@ -24,7 +24,7 @@ module Webpacker
     Webpacker.logger = old_logger
   end
 
-  DEPRECATION_GUIDE_URL = "https://github.com/shakacode/shakapacker/docs/webpacker_to_shakapacker_guideline.md"
+  DEPRECATION_GUIDE_URL = "https://github.com/shakacode/shakapacker/docs/v7_upgrade.md"
   DEPRECATION_MESSAGE = <<~MSG
     \e[33m
     DEPRECATION NOTICE:

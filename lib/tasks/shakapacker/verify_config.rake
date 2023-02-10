@@ -18,7 +18,7 @@ namespace :shakapacker do
       $stderr.puts <<~MSG
         DEPRECATION NOICE:
         Configuration `#{path}` file is deprecated.
-        More info: FIXME
+        More info: #{Webpacker::DEPRECATION_GUIDE_URL}
       MSG
     end
   end
