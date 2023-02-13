@@ -1,3 +1,5 @@
+require "webpacker/mtime_strategy"
+
 describe "Webpacker::MtimeStrategy" do
   let(:mtime_strategy) { Webpacker::MtimeStrategy.new }
   let(:manifest_timestamp) { Time.parse("2021-01-01 12:34:56 UTC") }

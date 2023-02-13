@@ -32,6 +32,16 @@ module Shakapacker
     Shakapacker.logger = old_logger
   end
 
+  # for backward compatibility
+  # Shakapacker uses SHAKAPACKER_XYZ intenally. This method helps with setting
+  # SHAKAPACKER_XYZ based on old WEBPACKER_XYZ if SHAKAPACKER_XYZ is not set.
+  def set_in_env_with_backward_compatibility(shakapacker_key)
+    return if ENV.key?(shakapacker_key)
+
+    webpacker_key = shakapacker_key.sub("SHAKAPACKER", "WEBPACKER")
+    ENV[shakapacker_key] = ENV[webpacker_key] if ENV.key?(webpacker_key)
+  end
+
   delegate :logger, :logger=, :env, :inlining_css?, to: :instance
   delegate :config, :compiler, :manifest, :commands, :dev_server, to: :instance
   delegate :bootstrap, :clean, :clobber, :compile, to: :commands

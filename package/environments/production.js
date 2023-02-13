@@ -5,7 +5,7 @@ const { merge } = require('webpack-merge')
 const CompressionPlugin = require('compression-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const baseConfig = require('./base')
-const { moduleExists } = require('../utils/helpers')
+const { moduleExists, setInEnvWithBackwardCompatibility } = require('../utils/helpers')
 
 const getPlugins = () => {
   const plugins = []
@@ -43,6 +43,8 @@ const tryCssMinimizer = () => {
   return null
 }
 
+setInEnvWithBackwardCompatibility('SHAKAPACKER_PARALLEL')
+
 const productionConfig = {
   devtool: 'source-map',
   stats: 'normal',
@@ -52,7 +54,7 @@ const productionConfig = {
     minimizer: [
       tryCssMinimizer(),
       new TerserPlugin({
-        parallel: Number.parseInt(process.env.WEBPACKER_PARALLEL, 10) || true,
+        parallel: Number.parseInt(process.env.SHAKAPACKER_PARALLEL, 10) || true,
         terserOptions: {
           parse: {
             // Let terser parse ecma 8 code but always output

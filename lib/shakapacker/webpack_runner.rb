@@ -18,7 +18,7 @@ module Shakapacker
 
     def run
       env = Shakapacker::Compiler.env
-      env["WEBPACKER_CONFIG"] = @webpacker_config
+      env["WEBPACKER_CONFIG"] = @shakapacker_config
 
       cmd = if node_modules_bin_exist?
         ["#{@node_modules_bin_path}/webpack"]

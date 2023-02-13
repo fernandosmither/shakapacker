@@ -41,7 +41,7 @@ module Shakapacker
 
           Version mismatch can lead to incorrect behavior and bugs. You should ensure that both the gem and npm package dependencies are locked to the same version.
 
-          You can enable the version check by setting `ensure_consistent_versioning: true` in your `webpacker.yml` file.
+          You can enable the version check by setting `ensure_consistent_versioning: true` in your `config/shakapacker.yml` file.
 
           Checking for gem and npm package versions mismatch or wildcard will be enabled by default in the next major version of shakapacker.
         MSG

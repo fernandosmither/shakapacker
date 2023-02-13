@@ -1,12 +1,12 @@
 class Shakapacker::Env
-  delegate :config_path, :logger, to: :@webpacker
+  delegate :config_path, :logger, to: :@shakapacker
 
-  def self.inquire(webpacker)
-    new(webpacker).inquire
+  def self.inquire(shakapacker)
+    new(shakapacker).inquire
   end
 
-  def initialize(webpacker)
-    @webpacker = webpacker
+  def initialize(shakapacker)
+    @shakapacker = shakapacker
   end
 
   def inquire
@@ -20,7 +20,7 @@ class Shakapacker::Env
     end
 
     def fallback_env_warning
-      logger.info "RAILS_ENV=#{Rails.env} environment is not defined in config/webpacker.yml, falling back to #{Shakapacker::DEFAULT_ENV} environment"
+      logger.info "RAILS_ENV=#{Rails.env} environment is not defined in `config/shakapacker.yml`, falling back to #{Shakapacker::DEFAULT_ENV} environment"
     end
 
     def available_environments

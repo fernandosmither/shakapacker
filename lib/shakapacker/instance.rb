@@ -3,8 +3,22 @@ class Shakapacker::Instance
 
   attr_reader :root_path, :config_path
 
-  def initialize(root_path: Rails.root, config_path: Rails.root.join("config/webpacker.yml"))
-    @root_path, @config_path = root_path, config_path
+  def initialize(root_path: Rails.root, config_path: Rails.root.join("config/shakapacker.yml"))
+    @root_path = root_path
+
+    if config_path == Rails.root.join("config/shakapacker.yml")
+      # For backward compatibility
+      if File.exist?(config_path)
+        @config_path = config_path
+      else
+        puts "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+        puts "fall back to webpacker.yml"
+        puts "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+        @config_path = Rails.root.join("config/webpacker.yml")
+      end
+    else
+      @config_path = config_path
+    end
   end
 
   def env

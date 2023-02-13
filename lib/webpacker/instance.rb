@@ -1,5 +1,5 @@
 class Webpacker::Instance < Shakapacker::Instance
-  def initialize(root_path: Rails.root, config_path: Rails.root.join("config/webpacker.yml"))
+  def initialize(root_path: Rails.root, config_path: Rails.root.join("config/shakapacker.yml"))
     puts Webpacker::DEPRECATION_MESSAGE
 
     super

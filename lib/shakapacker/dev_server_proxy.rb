@@ -1,10 +1,11 @@
 require "rack/proxy"
 
 class Shakapacker::DevServerProxy < Rack::Proxy
-  delegate :config, :dev_server, to: :@webpacker
+  delegate :config, :dev_server, to: :@shakapacker
 
   def initialize(app = nil, opts = {})
-    @webpacker = opts.delete(:webpacker) || Shakapacker.instance
+    # for backward compatibility
+    @shakapacker = opts.delete(:webpacker) || the_used_module.instance
     opts[:streaming] = false if Rails.env.test? && !opts.key?(:streaming)
     super
   end
@@ -29,5 +30,11 @@ class Shakapacker::DevServerProxy < Rack::Proxy
   private
     def public_output_uri_path
       config.public_output_path.relative_path_from(config.public_path).to_s + "/"
+    end
+
+    # for backward compatibility
+    def the_used_module
+      return Webpacker unless self.class.name.match?(/^Webpacker::/)
+      Shakapacker
     end
 end

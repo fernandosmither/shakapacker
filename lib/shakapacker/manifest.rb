@@ -4,14 +4,14 @@
 # "/packs/calendar-1016838bab065ae1e314.css".
 #
 # When the configuration is set to on-demand compilation, with the `compile: true` option in
-# the webpacker.yml file, any lookups will be preceded by a compilation if one is needed.
+# the `config/shakapacker.yml` file, any lookups will be preceded by a compilation if one is needed.
 class Shakapacker::Manifest
   class MissingEntryError < StandardError; end
 
-  delegate :config, :compiler, :dev_server, to: :@webpacker
+  delegate :config, :compiler, :dev_server, to: :@shakapacker
 
-  def initialize(webpacker)
-    @webpacker = webpacker
+  def initialize(shakapacker)
+    @shakapacker = shakapacker
   end
 
   def refresh
@@ -32,7 +32,7 @@ class Shakapacker::Manifest
     lookup_pack_with_chunks(name, pack_type) || handle_missing_entry(name, pack_type)
   end
 
-  # Computes the relative path for a given Webpacker asset using manifest.json.
+  # Computes the relative path for a given Shakapacker asset using manifest.json.
   # If no asset is found, returns nil.
   #
   # Example:
@@ -55,7 +55,7 @@ class Shakapacker::Manifest
     end
 
     def compile
-      Shakapacker.logger.tagged("Webpacker") { compiler.compile }
+      Shakapacker.logger.tagged("Shakapacker") { compiler.compile }
     end
 
     def data
@@ -106,11 +106,11 @@ class Shakapacker::Manifest
       <<-MSG
 Shakapacker can't find #{bundle_name} in #{config.manifest_path}. Possible causes:
 1. You forgot to install node packages (try `yarn install`) or are running an incompatible version of Node
-2. Your app has code with a non-standard extension (like a `.jsx` file) but the extension is not in the `extensions` config in `config/webpacker.yml`
-3. You have set compile: false (see `config/webpacker.yml`) for this environment
-   (unless you are using the `bin/webpacker -w` or the `bin/webpacker-dev-server`, in which case maybe you aren't running the dev server in the background?)
+2. Your app has code with a non-standard extension (like a `.jsx` file) but the extension is not in the `extensions` config in `config/shakapacker.yml`
+3. You have set compile: false (see `config/shakapacker.yml`) for this environment
+   (unless you are using the `bin/shakapacker -w` or the `bin/shakapacker-dev-server`, in which case maybe you aren't running the dev server in the background?)
 4. webpack has not yet FINISHED running to reflect updates.
-5. You have misconfigured Webpacker's `config/webpacker.yml` file.
+5. You have misconfigured Shakapacker's `config/shakapacker.yml` file.
 6. Your webpack configuration is not creating a manifest.
 
 Your manifest contains:

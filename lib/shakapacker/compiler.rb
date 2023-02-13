@@ -6,11 +6,11 @@ class Shakapacker::Compiler
   # Shakapacker::Compiler.env['FRONTEND_API_KEY'] = 'your_secret_key'
   cattr_accessor(:env) { {} }
 
-  delegate :config, :logger, :strategy, to: :webpacker
+  delegate :config, :logger, :strategy, to: :shakapacker
   delegate :fresh?, :stale?, :after_compile_hook, to: :strategy
 
-  def initialize(webpacker)
-    @webpacker = webpacker
+  def initialize(shakapacker)
+    @shakapacker = shakapacker
   end
 
   def compile
@@ -32,7 +32,7 @@ class Shakapacker::Compiler
   end
 
   private
-    attr_reader :webpacker
+    attr_reader :shakapacker
 
     def acquire_ipc_lock
       open_lock_file do |lf|
@@ -62,8 +62,14 @@ class Shakapacker::Compiler
     end
 
     def optionalRubyRunner
-      bin_webpack_path = config.root_path.join("bin/webpacker")
-      first_line = File.readlines(bin_webpack_path).first.chomp
+      bin_shakapacker_path = config.root_path.join("bin/shakapacker")
+
+      # for backward compatibility
+      unless File.exist?(bin_shakapacker_path)
+        bin_shakapacker_path = config.root_path.join("bin/webpacker")
+      end
+
+      first_line = File.readlines(bin_shakapacker_path).first.chomp
       /ruby/.match?(first_line) ? RbConfig.ruby : ""
     end
 
@@ -72,7 +78,7 @@ class Shakapacker::Compiler
 
       stdout, stderr, status = Open3.capture3(
         webpack_env,
-        "#{optionalRubyRunner} ./bin/webpacker",
+        "#{optionalRubyRunner} ./bin/shakapacker",
         chdir: File.expand_path(config.root_path)
       )
 
@@ -94,8 +100,16 @@ class Shakapacker::Compiler
     def webpack_env
       return env unless defined?(ActionController::Base)
 
-      env.merge("WEBPACKER_ASSET_HOST"        => ENV.fetch("WEBPACKER_ASSET_HOST", ActionController::Base.helpers.compute_asset_host),
-                "WEBPACKER_RELATIVE_URL_ROOT" => ENV.fetch("WEBPACKER_RELATIVE_URL_ROOT", ActionController::Base.relative_url_root),
-                "WEBPACKER_CONFIG" => webpacker.config_path.to_s)
+      Shakapacker::set_in_env_with_backward_compatibility("SHAKAPACKER_ASSET_HOST")
+      Shakapacker::set_in_env_with_backward_compatibility("SHAKAPACKER_RELATIVE_URL_ROOT")
+
+      env.merge(
+        "SHAKAPACKER_ASSET_HOST"        => ENV.fetch("SHAKAPACKER_ASSET_HOST", ActionController::Base.helpers.compute_asset_host),
+        "WEBPACKER_ASSET_HOST"          => ENV.fetch("SHAKAPACKER_ASSET_HOST", ActionController::Base.helpers.compute_asset_host),
+        "SHAKAPACKER_RELATIVE_URL_ROOT" => ENV.fetch("SHAKAPACKER_RELATIVE_URL_ROOT", ActionController::Base.relative_url_root),
+        "WEBPACKER_RELATIVE_URL_ROOT"   => ENV.fetch("SHAKAPACKER_RELATIVE_URL_ROOT", ActionController::Base.relative_url_root),
+        "SHAKAPACKER_CONFIG" => shakapacker.config_path.to_s,
+        "WEBPACKER_CONFIG"   => shakapacker.config_path.to_s
+      )
     end
 end

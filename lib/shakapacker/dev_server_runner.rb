@@ -20,7 +20,7 @@ module Shakapacker
 
         @config = Configuration.new(
           root_path: app_root,
-          config_path: Pathname.new(@webpacker_config),
+          config_path: Pathname.new(@shakapacker_config),
           env: ENV["RAILS_ENV"]
         )
 
@@ -34,7 +34,7 @@ module Shakapacker
 
       rescue Errno::ENOENT, NoMethodError
         $stdout.puts "webpack dev_server configuration not found in #{@config.config_path}[#{ENV["RAILS_ENV"]}]."
-        $stdout.puts "Please run bundle exec rails webpacker:install to install Webpacker"
+        $stdout.puts "Please run bundle exec rails shakapacker:install to install Webpacker"
         exit!
       end
 
@@ -48,7 +48,7 @@ module Shakapacker
         end
 
         if @argv.include?("--https") && !@https
-          $stdout.puts "Please set https: true in webpacker.yml to use the --https command line flag."
+          $stdout.puts "Please set https: true in shakapacker.yml to use the --https command line flag."
           exit!
         end
       end
@@ -64,7 +64,7 @@ module Shakapacker
 
       def execute_cmd
         env = Shakapacker::Compiler.env
-        env["WEBPACKER_CONFIG"] = @webpacker_config
+        env["WEBPACKER_CONFIG"] = @shakapacker_config
         env["WEBPACK_SERVE"] = "true"
 
         cmd = if node_modules_bin_exist?

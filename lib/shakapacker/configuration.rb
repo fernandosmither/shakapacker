@@ -31,13 +31,25 @@ class Shakapacker::Configuration
     fetch(:ensure_consistent_versioning)
   end
 
+  # For backward compatibility
   def webpacker_precompile?
+    shakapacker_precompile?
+  end
+
+  def shakapacker_precompile?
+    # for backward compatibility
+    Shakapacker::set_in_env_with_backward_compatibility("SHAKAPACKER_PRECOMPILE")
+
     # ENV of false takes precedence
-    return false if %w(no false n f).include?(ENV["WEBPACKER_PRECOMPILE"])
-    return true if %w(yes true y t).include?(ENV["WEBPACKER_PRECOMPILE"])
+    return false if %w(no false n f).include?(ENV["SHAKAPACKER_PRECOMPILE"])
+    return true if %w(yes true y t).include?(ENV["SHAKAPACKER_PRECOMPILE"])
 
     return false unless config_path.exist?
-    fetch(:webpacker_precompile)
+
+    # For backward compatibility
+    return fetch(:webpacker_precompile) if fetch(:shakapacker_precompile).nil?
+
+    fetch(:shakapacker_precompile)
   end
 
   def source_path
@@ -98,6 +110,20 @@ class Shakapacker::Configuration
 
   def fetch(key)
     data.fetch(key, defaults[key])
+
+    # for backward compatiblity
+    # direct_result = data.fetch(key, defaults[key])
+
+    # puts 'ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ'
+    # puts "direct_result: #{direct_result}"
+    # puts 'ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ'
+
+    # return direct_result unless direct_result.nil?
+
+    # if key.match?(/^SHAKAPACKER_/)
+    #   webpacker_key = key.sub("SHAKAPACKER", "WEBPACKER")
+    #   return data.fetch(webpacker_key, defaults[webpacker_key])
+    # end
   end
 
   private
@@ -116,8 +142,8 @@ class Shakapacker::Configuration
       if self.class.installing
         {}
       else
-        raise "Webpacker configuration file not found #{config_path}. " \
-              "Please run rails webpacker:install " \
+        raise "Shakapacker configuration file not found #{config_path}. " \
+              "Please run rails shakapacker:install " \
               "Error: #{e.message}"
       end
     rescue Psych::SyntaxError => e
@@ -128,7 +154,7 @@ class Shakapacker::Configuration
 
     def defaults
       @defaults ||= begin
-        path = File.expand_path("../../install/config/webpacker.yml", __FILE__)
+        path = File.expand_path("../../install/config/shakapacker.yml", __FILE__)
         config = begin
           YAML.load_file(path, aliases: true)
         rescue ArgumentError

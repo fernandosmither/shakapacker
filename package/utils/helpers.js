@@ -55,6 +55,16 @@ const loaderMatches = (configLoader, loaderToCheck, fn) => {
   return fn()
 }
 
+const setInEnvWithBackwardCompatibility = (shakapackerVariableName) => {
+  const isDefinedInEnv = (key) => Object.keys(process.env).includes(key)
+
+  const webpackerVariableName = shakapackerVariableName.replace(/^SHAKAPACKER_/, 'WEBPACKER_')
+  
+  if (!isDefinedInEnv(shakapackerVariableName) && isDefinedInEnv(webpackerVariableName)) {
+    process.env[shakapackerVariableName] = process.env[webpackerVariableName]
+  }
+}
+
 module.exports = {
   chdirTestApp,
   chdirCwd,
@@ -64,5 +74,6 @@ module.exports = {
   canProcess,
   moduleExists,
   resetEnv,
-  loaderMatches
+  loaderMatches,
+  setInEnvWithBackwardCompatibility
 }

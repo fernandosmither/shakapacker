@@ -123,7 +123,8 @@ describe "Webpacker::Configuration" do
 
     describe "#webpacker_precompile?" do
       before :each do
-        ENV["WEBPACKER_PRECOMPILE"] = nil
+        ENV.delete("WEBPACKER_PRECOMPILE")
+        ENV.delete("SHAKAPACKER_PRECOMPILE")
       end
 
       subject { config.webpacker_precompile? }
@@ -203,7 +204,8 @@ describe "Webpacker::Configuration" do
   context "with webpacker_precompile entry set to false" do
     describe "#webpacker_precompile?" do
       before :each do
-        ENV["WEBPACKER_PRECOMPILE"] = nil
+        ENV.delete("WEBPACKER_PRECOMPILE")
+        ENV.delete("SHAKAPACKER_PRECOMPILE")
       end
 
       let(:config) {
@@ -225,8 +227,9 @@ describe "Webpacker::Configuration" do
         expect(subject).to be true
       end
 
-      it "returns false with WEBPACKER_PRECOMPILE set to nil" do
-        ENV["WEBPACKER_PRECOMPILE"] = nil
+      it "returns false with WEBPACKER_PRECOMPILE not set" do
+        ENV.delete("WEBPACKER_PRECOMPILE")
+        ENV.delete("SHAKAPACKER_PRECOMPILE")
         expect(subject).to be false
       end
     end
